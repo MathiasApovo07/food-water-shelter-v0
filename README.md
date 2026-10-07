@@ -1,65 +1,59 @@
 # Food, Water, Shelter — Desert Simulation
 
-Version locale corrigée selon le PDF d’Ileah et le layout fourni, le 7 octobre 2026.
+Version 0 of the DRI Fellowship simulation, shared for review and feedback.
 
-## Ouvrir et jouer
+This prototype explores how access to food, water, and shelter affects a population of sagebrush lizards.
 
-Ouvrir `index.html` dans Edge, Chrome ou Firefox. Si la page est déjà ouverte, la recharger (Ctrl+F5) pour charger les corrections. Conserver le dossier `src` et `styles.css` avec le fichier HTML.
+## How to play
 
-1. Choisir éventuellement **Drought** et/ou **Wildfire**, puis **Start**.
-2. Glisser un lézard sur sa ressource, ou sélectionner le lézard puis la ressource.
-3. Observer les compteurs, les crânes temporaires, le graphique et le feedback.
-4. **Pause / Resume** suspend/reprend tous les délais ; **Reset** recommence avec les options choisies et permet de les modifier.
+1. Select **Start**.
+2. Drag each lizard to the resource it needs, or select the lizard and then the matching resource.
+3. Watch the population and resource counters, graph, and feedback.
+4. Use **Pause / Resume** to pause or continue, and **Reset** to start again.
 
-Chaque lézard a **8 secondes à partir de son apparition**. Une réussite remplace le parent et la ressource par deux nouveau-nés, chacun avec un nouveau besoin aléatoire et huit secondes. Sans réussite à temps, le lézard meurt et une ressource apparaît. Les modes « sans limite » et « 20 secondes » ont été retirés de l’interface. Le moteur accepte encore une durée finie pour les essais techniques de calibration ; elle n’est pas proposée aux élèves.
+Each lizard has **8 seconds from the moment it appears** to reach its required resource.
 
-Sans intervention, les dix lézards de départ meurent ensemble à huit secondes. Zéro lézard termine la session ; Reset permet de recommencer. Quitter l’onglet met la simulation en pause, sans reprise automatique.
+- A successful match consumes the resource and replaces the parent with two offspring.
+- Each offspring receives a random need and a fresh eight-second timer.
+- A lizard that does not reach its resource in time dies, and a random resource appears.
+- The session ends when no lizards remain. Select **Reset** to try again.
 
-## Interface et accessibilité
+## Starting conditions
 
-Sur grand écran : terrain à gauche ; compteurs, options et commandes empilés à droite ; graphique en dessous à gauche et feedback à droite. Sur petit écran, les blocs s’empilent pour rester lisibles et les commandes passent avant le terrain.
+The standard simulation begins with **10 lizards and 30 resources**: 10 Food, 10 Water, and 10 Shelter.
 
-- Souris, stylet et toucher : glisser-déposer, ou sélection puis association.
-- Au toucher, faire défiler depuis une zone qui n’est pas un lézard ; les lézards réservent le geste au déplacement.
-- Clavier : Tab, Entrée/Espace, Échap pour annuler.
-- Le tableau contient tous les relevés depuis le départ ; il est défilant. Reset efface l’historique de la session précédente.
-- Les résultats restent en mémoire dans la page jusqu’au reset ou à sa fermeture. Pas de compte élève, installation, base de données ni envoi des données.
+The balanced starting distribution and spacing of objects are prototype design choices for review.
 
-## Règles et extensions
+## Optional settings
 
-- Départ normal : 10 lézards et 30 ressources, réparties 10 Food / 10 Water / 10 Shelter.
-- Positions aléatoires dans des cases séparées pour garder les cibles lisibles. Cette grille et la répartition équilibrée sont des choix de conception, pas des valeurs imposées par Ileah.
-- Mauvaise ressource : aucune consommation ; le délai continue.
-- À chaque mort, une nouvelle ressource aléatoire apparaît. Graphique et compteurs enregistrent cet événement immédiatement, même entre deux secondes.
-- Sans incendie, lézards + ressources = 40.
-- **Drought** : poids Food/Water/Shelter = 2/1/2 pour les ressources retournées (40 % / 20 % / 40 %). L’eau est donc deux fois moins probable que chacune des autres ressources, et non une probabilité absolue de 50 %. Le départ conserve 30 ressources avec 12/6/12 pour rendre la condition visible dès le début. Ce choix initial est documenté pour revue DRI.
-- **Wildfire** : intervalle aléatoire uniforme de 20 à 40 secondes de simulation. Tous les abris disparaissent ; aucune restauration automatique programmée. Des morts ultérieures peuvent produire du sagebrush. Les incendies diminuent le total lézards + ressources : la conservation à 40 ne s’applique plus.
-- Les deux extensions sont désactivées au départ. Elles sont présentes pour répondre à la demande d’appliquer tous les éléments de l’audit ; Ileah permettait de les reporter après le prototype.
+- **Drought:** water is half as likely to appear as either food or shelter. The starting resources are adjusted to 12 Food, 6 Water, and 12 Shelter.
+- **Wildfire:** fires occur at random intervals of 20–40 seconds and remove all shelter. Shelter can return through subsequent resource generation.
 
-L’historique complet est conservé en mémoire et enregistré chaque seconde, à chaque association réussie, à chaque mort, à chaque incendie et à la pause. Aucune stabilisation ni tendance n’est artificiellement ajoutée aux courbes.
+Both settings are off by default. Their timing and effects remain open to educational review and calibration.
 
-## Vérifications
+## Controls and accessibility
 
-Les tests du moteur et des données couvrent notamment : échéances exactes, pause, reset, reproduction, mort et retour de ressource, mises à jour entre deux secondes, historique complet, fréquence de l’eau, incendie et retour naturel des abris.
+The prototype supports drag-and-drop interaction and a select-then-match alternative.
 
-Les essais reproductibles `../work/calibrate.cjs` simulent des associations toutes les 0,5, 1 ou 1,5 seconde sur deux minutes, avec trois graines aléatoires, avec/sans extensions. Ils servent à examiner le comportement, pas à certifier l’expérience des élèves. À une association par seconde, les scénarios de base oscillent entre 14 et 15 lézards pendant la deuxième minute. Le rythme des associations influence donc fortement le plateau. La calibration pédagogique reste à faire avec DRI et des utilisateurs réels ; notamment l’intensité des effets sécheresse/incendie.
+Keyboard controls:
+- **Tab:** navigate between controls and objects.
+- **Enter / Space:** select.
+- **Escape:** cancel selection.
 
-**Limite de vérification :** aucun rendu navigateur ni geste tactile réel n’a été confirmé dans cet environnement. Les restrictions précédemment rencontrées n’ont pas été contournées. Les scénarios navigateur `../work/verify-ui.cjs` ont été adaptés, mais restent à exécuter dans un environnement autorisé. Aucune certification Section 508 ni validation graphique DRI n’est revendiquée.
+The layout adapts to smaller screens. A table accompanies the graph. Further accessibility and device testing is needed; Section 508 compliance has not been certified.
 
-Rien n’a été publié sur GitHub ou en ligne. L’hébergement final, la revue graphique/pédagogique DRI et les tests multi-navigateurs/appareils restent à organiser.
+## Running a downloaded copy
 
-## Maintenance
+Download and extract the entire project, then open **index.html** in Chrome, Edge, or Firefox. Keep **styles.css** and the **src** folder alongside **index.html**.
 
-Avec Node.js, dans ce dossier :
+No installation or student account is required. Simulation results remain in the browser page and are cleared when the session is reset or the page is closed.
 
-```powershell
-node --test
-```
+## Review status
 
-Diagnostic pédagogique reproductible :
+This is an initial working prototype, not a final release. Feedback is welcome on the scientific behavior, instructions, visuals, usability, accessibility, and optional settings.
 
-```powershell
-node ../work/calibrate.cjs
-```
+Automated tests are included in the **tests** folder. With Node.js installed, run them from the project folder using:
 
-La sauvegarde avant corrections est dans `../work/before-conformity-2026-10-07`.
+`node --test`
+
+GitHub Pages publication is the next step for providing direct browser access.
