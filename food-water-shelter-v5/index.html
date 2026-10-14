@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Food, Water, Shelter — Desert Simulation</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="src/engine.js" defer></script>
+  <script src="src/data-view.js" defer></script>
+  <script src="src/exports.js" defer></script>
+  <script src="src/sound.js" defer></script>
+  <script src="src/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#controls">Skip to simulation controls</a>
+  <main>
+    <header class="simulation-title"><img class="brand-logo" src="assets/stem-education-logo.png" alt="STEM Education Program at DRI" width="2070" height="885"><div class="title-copy"><p class="title-eyebrow">Explore an ecosystem</p><h1>Food, Water, Shelter</h1><p class="title-subtitle">Sagebrush steppe simulation</p></div></header>
+    <section class="controls-panel top-controls" id="controls" tabindex="-1" aria-labelledby="controls-heading"><h2 id="controls-heading">Controls</h2>
+          <div class="button-group"><button class="primary" id="start" hidden aria-label="Start simulation"><span id="start-icon" aria-hidden="true">▶</span> <span id="start-text">Start</span></button><button class="secondary" id="reset" aria-label="Reset simulation">Reset</button><button class="secondary" id="sound-toggle" type="button" aria-pressed="false" aria-label="Enable sound effects">Sound: off</button></div>
+          <p class="clock"><span id="elapsed">00:00</span> elapsed</p>
+          <p class="small control-hint"><strong>10 seconds per lizard.</strong> Match before its bar runs out. Pause stops all timers.</p>
+        </section>
+    <div class="workspace">
+      <section class="simulation-panel" aria-label="Simulation habitat">
+        <div class="play-toolbar"><p id="interaction-help" class="play-help">Click a lizard, then click the resource it needs. You can also drag and drop.</p><span class="state" id="state-label">Ready</span></div>
+        <div class="terrain-wrap">
+<section id="intro-screen" class="lesson-screen" aria-labelledby="intro-title">
+<h2 id="intro-title" tabindex="-1">Read the habitat</h2>
+<p>Within an ecosystem, an organism's habitat includes food, water, and shelter. However, these resources are limited, which limits the size of the population that can exist within that ecosystem. This limited population size is referred to as the carrying capacity.</p>
+<p>This game represents a simplified version of a sagebrush steppe ecosystem. You will play as sagebrush lizards, which eat insects and use sagebrush as shelter.</p>
+<p class="lesson-emphasis">Click to match the sagebrush lizards to the resources they need before the time runs out!</p>
+<p>Lizards who get what they need will live long enough to reproduce. If the lizard doesn't get to the resource in time, it will die, feeding back into the habitat through decomposition.</p>
+<button id="intro-start" class="primary lesson-button" type="button">Start</button>
+</section>
+<section id="fire-screen" class="lesson-screen fire-lesson" aria-labelledby="fire-title" hidden>
+<h2 id="fire-title" tabindex="-1">A wildfire sweeps through the ecosystem, burning some of the sagebrush.</h2>
+<p>The Sagebrush Steppe is a fire-adapted ecosystem, which means that wildfires naturally occur periodically. The frequency that wildfires tend to occur is referred to as an ecosystem's fire regime. Wildfire has an important role in an ecosystem, removing dead plant matter and allowing for new growth. While wildfires may appear to momentarily harm an ecosystem, they are an important abiotic factor in allowing an ecosystem to thrive in the long-term.</p>
+<button id="fire-resume" class="primary lesson-button" type="button">Resume</button>
+</section>
+
+          <div id="terrain" class="terrain" inert aria-hidden="true" role="region" aria-label="Desert habitat" aria-describedby="interaction-help">
+            <svg class="landscape" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true"><circle cx="870" cy="72" r="35" fill="#f0d7a0"/><path d="M0 180 90 70 155 150 270 40 390 180 500 80 620 200 800 110 1000 190V600H0Z" fill="#d9c2a2"/><path d="M0 290Q180 210 380 290T1000 275V600H0Z" fill="#e6cfaa"/><path d="M0 450Q240 370 520 435T1000 420V600H0Z" fill="#ead9b9"/><g fill="#a6a780"><ellipse cx="72" cy="530" rx="38" ry="15"/><ellipse cx="940" cy="360" rx="28" ry="13"/><path id="fire-markers" class="fire-markers"/></g></svg>
+          </div>
+        </div>
+        <p class="habitat-note">Sagebrush lizards · insects · water · sagebrush shelter</p>
+      </section>
+      <aside class="sidebar" aria-label="Simulation counters and options">
+        <section class="counter-panel" aria-labelledby="counter-heading"><h2 id="counter-heading">Live counters</h2>
+          <dl class="counters"><div><dt>Lizards</dt><dd id="count-lizards">10</dd></div><div><dt>Food</dt><dd id="count-food">10</dd></div><div><dt>Water</dt><dd id="count-water">10</dd></div><div><dt>Shelter</dt><dd id="count-shelter">10</dd></div></dl>
+        </section>
+        <section class="options-panel" aria-labelledby="options-heading"><h2 id="options-heading">Options</h2>
+          <label><input type="checkbox" id="drought"> Drought</label>
+          <label><input type="checkbox" id="wildfire"> Wildfire</label>
+          <p class="small" id="options-help">Choose before Start. Reset to change options.</p>
+          <details><summary>What changes?</summary><p class="small">Drought: water is half as likely to appear as food or shelter. Wildfire: every 15–30 seconds, half the shelter disappears (rounded up). Some deaths return shelter naturally.</p></details>
+        </section>
+
+      </aside>
+      <section class="data-panel" aria-labelledby="data-heading">
+        <h2 id="data-heading">Population / resource graph</h2>
+        <div class="export-actions" role="group" aria-label="Download simulation results"><button class="secondary" type="button" id="export-csv">Download table (CSV)</button><button class="secondary" type="button" id="export-png">Download graph (PNG)</button></div>
+        <p id="export-status" class="small" role="status" aria-live="polite">Download a snapshot of the full recorded session.</p>
+        <p id="sample-label" class="sample-label">At the starting point</p>
+        <div class="chart-legend" aria-label="Graph legend"><span><i class="legend-line lizards"></i>Lizards</span><span><i class="legend-line food"></i>Food</span><span><i class="legend-line water"></i>Water</span><span><i class="legend-line shelter"></i>Shelter</span><span><i class="legend-line wildfire"></i>Wildfire</span></div>
+      <svg id="chart" class="chart" viewBox="0 0 720 224" role="img" aria-labelledby="chart-title chart-desc"><title id="chart-title">Population and resources over simulated time</title><desc id="chart-desc">The same readings are available in the data table below.</desc><g class="chart-grid"><path d="M48 16H688M48 96H688M48 176H688"/></g><g class="chart-labels"><text transform="rotate(-90)" x="-96" y="12" text-anchor="middle">Count</text><text x="38" y="20" text-anchor="end" id="axis-top">10</text><text x="38" y="100" text-anchor="end" id="axis-middle">5</text><text x="38" y="180" text-anchor="end">0</text><text x="48" y="199" id="axis-start">0 s</text><text x="688" y="199" text-anchor="end" id="axis-end">1 s</text><text x="368" y="218" text-anchor="middle">Simulated time (seconds)</text></g><g transform="translate(48 16)" class="series"><path id="path-shelter" class="shelter"/><path id="path-water" class="water"/><path id="path-food" class="food"/><path id="path-lizards" class="lizards"/></g></svg>
+      <details class="table-details"><summary>View the data table <span>Full session history</span></summary><div class="table-scroll" tabindex="0" role="region" aria-label="Simulation readings"><table><caption class="sr-only">Time in seconds, lizard population and resource counts</caption><thead><tr><th scope="col">Time (s)</th><th scope="col">Lizards</th><th scope="col">Food</th><th scope="col">Water</th><th scope="col">Shelter</th></tr></thead><tbody id="history-body"></tbody></table></div></details>
+      </section>
+      <section class="info-panel" aria-labelledby="info-heading"><h2 id="info-heading">Info / feedback</h2>
+        <div class="field-message" id="field-message"><p id="feedback">Read the habitat, then press Start. Each lizard has ten seconds to find its resource.</p></div>
+        <p class="small" id="event-feedback">A successful match replaces one lizard with two. An unmet need causes death and returns one resource.</p>
+        <details><summary>Read the habitat</summary><p class="small">Food, water and shelter limit the population. Carrying capacity is the population a habitat can support. Observe whether the graph settles, and how shortages change it. Your matching pace also affects the result.</p><p class="small">Keyboard: Tab to a lizard, then Enter or Space. Select a matching resource the same way. Escape cancels selection. On touchscreens, drag from a lizard or use two taps; scroll from outside a lizard.</p></details>
+        <div class="sr-only" id="announcer" role="status" aria-live="polite" aria-atomic="true"></div>
+      </section>
+    </div>
+    <footer>Results stay in this page until reset or closed.</footer>
+  </main>
+  <noscript>This simulation requires JavaScript. Enable it in your browser to explore the habitat.</noscript>
+</body>
+</html>
